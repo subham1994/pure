@@ -89,25 +89,27 @@ export default class SearchableList extends Component<void, Props, State> {
 	});
 
 	_handleChangeSearch: Function = (filter: string) => {
-		if (filter) {
-			const data = this._cachedResults[filter];
+		setTimeout(() => {
+			if (filter) {
+				const data = this._cachedResults[filter];
 
-			this.setState({
-				filter,
-				data: data || '@@loading',
-			});
+				this.setState({
+					filter,
+					data: data || '@@loading',
+				});
 
-			if (data) {
-				return;
+				if (data) {
+					return;
+				}
+
+				this._fetchResults(filter);
+			} else {
+				this.setState({
+					filter,
+					data: '@@blankslate',
+				});
 			}
-
-			this._fetchResults(filter);
-		} else {
-			this.setState({
-				filter,
-				data: '@@blankslate',
-			});
-		}
+		}, 0);
 	};
 
 	_getDataSource: Function = (): ListView.DataSource => {
